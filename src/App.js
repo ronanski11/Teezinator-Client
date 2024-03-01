@@ -1,24 +1,42 @@
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import { createTheme, ThemeProvider } from "@mui/material/styles";
+import CssBaseline from "@mui/material/CssBaseline";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import LoginPage from "./components/LoginPage/LoginPage";
+import Home from "./components/Home";
+import RequireAuth from "./RequireAuth";
+import "./App.css";
 
 function App() {
+  // State to manage theme mode
+
+  // Create a theme instance based on the current mode
+  const darkTheme = createTheme({
+    palette: {
+      mode: "dark",
+    },
+  });
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <ThemeProvider theme={darkTheme}>
+      <CssBaseline />{" "}
+      {/* Normalize CSS and apply baseline styles based on the theme */}
+      <Router>
+        <div>
+          <Routes>
+            <Route path="/login" element={<LoginPage />} />
+            <Route
+              path="/"
+              element={
+                <RequireAuth>
+                  <Home />
+                </RequireAuth>
+              }
+            />
+          </Routes>
+        </div>
+      </Router>
+    </ThemeProvider>
   );
 }
 
